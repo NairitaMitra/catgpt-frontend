@@ -1,0 +1,162 @@
+body{
+    margin:0;
+    background:black;
+    color:white;
+    font-family:Arial;
+    overflow-x:hidden;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    text-align:center;
+}
+
+.logo-container{
+    margin-top:40px;
+}
+
+.paw-logo{
+    font-size:100px;
+    color:gold;
+    text-shadow:
+        0 0 20px gold,
+        0 0 40px gold,
+        0 0 60px gold;
+}
+
+h1{
+    font-size:70px;
+    background:linear-gradient(gold,silver);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.tagline{
+    font-size:22px;
+    color:#ddd;
+}
+
+.features{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+    margin-top:30px;
+}
+
+.card{
+    padding:20px;
+    border:1px solid gold;
+    border-radius:15px;
+    min-width:130px;
+    background:#111;
+    box-shadow:0 0 15px rgba(255,215,0,.3);
+}
+
+.chat-box{
+    margin-top:40px;
+    border:1px solid gold;
+    border-radius:20px;
+    min-height:300px;
+    padding:20px;
+    background:#0a0a0a;
+}
+
+.bot-message{
+    background:#111;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    text-align:left;
+}
+
+.user-message{
+    background:#222;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    text-align:right;
+}
+
+.input-area{
+    margin-top:20px;
+    display:flex;
+}
+
+.input-area input{
+    flex:1;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+}
+
+.input-area button{
+    margin-left:10px;
+    padding:15px 30px;
+    background:gold;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.footer{
+    margin-top:40px;
+    padding:20px;
+    color:gold;
+    text-shadow:
+        0 0 10px gold,
+        0 0 20px gold;
+}
+
+.watermark{
+    position:fixed;
+    top:20px;
+    right:20px;
+    color:gold;
+    font-size:25px;
+}
+
+.floating-paws span{
+    position:fixed;
+    font-size:40px;
+    animation:float 12s infinite linear;
+}
+
+.floating-paws span:nth-child(1){
+    left:10%;
+    color:gold;
+}
+
+.floating-paws span:nth-child(2){
+    left:30%;
+    color:silver;
+}
+
+.floating-paws span:nth-child(3){
+    left:50%;
+    color:gold;
+}
+
+.floating-paws span:nth-child(4){
+    left:70%;
+    color:silver;
+}
+
+.floating-paws span:nth-child(5){
+    left:90%;
+    color:gold;
+}
+
+@keyframes float{
+    from{
+        top:100%;
+        opacity:0;
+    }
+
+    to{
+        top:-10%;
+        opacity:1;
+    }
+}
