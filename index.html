@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CatGPT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css">
+<title>CatGPT</title>
+
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<div class="floating-paws">
+<div class="background-paws">
+    <span>🐾</span>
     <span>🐾</span>
     <span>🐾</span>
     <span>🐾</span>
@@ -16,64 +20,84 @@
     <span>🐾</span>
 </div>
 
-<div class="container">
+<header>
 
-    <div class="watermark">
-        © Nairita
-    </div>
+<div class="logo">
 
-    <div class="logo-container">
+<div class="paw-logo">
+🐾
+</div>
 
-        <div class="paw-logo">
-            🐾
-        </div>
-
-        <h1>CatGPT</h1>
-
-        <p class="tagline">
-            Premium AI Assistant For Cats
-        </p>
-
-    </div>
-
-    <div class="features">
-
-        <div class="card">🐾 Behavior</div>
-        <div class="card">🔊 Sounds</div>
-        <div class="card">🍖 Food</div>
-        <div class="card">💊 Medicine</div>
-        <div class="card">🛒 Shopping</div>
-        <div class="card">🩺 Vet Help</div>
-
-    </div>
-
-    <div class="chat-box" id="chatBox">
-
-        <div class="bot-message">
-            Meow! Ask me anything about cats 🐱
-        </div>
-
-    </div>
-
-    <div class="input-area">
-
-        <input
-            type="text"
-            id="question"
-            placeholder="Ask CatGPT about cats..."
-        >
-
-        <button onclick="askCat()">
-            Send
-        </button>
-
-    </div>
-
-    <div class="footer">
-        © 2026 Nairita • CatGPT™ • All Rights Reserved 🐾
-    </div>
+<h1>CatGPT</h1>
 
 </div>
+
+<div class="copyright-top">
+© Nairita
+</div>
+
+</header>
+
+<div class="categories">
+
+<button onclick="setCategory('cat behavior')">
+🐾 Behavior
+</button>
+
+<button onclick="setCategory('cat sounds')">
+🔊 Sounds
+</button>
+
+<button onclick="setCategory('cat food')">
+🍖 Food
+</button>
+
+<button onclick="setCategory('cat medicine')">
+💊 Medicine
+</button>
+
+<button onclick="setCategory('cat shopping')">
+🛒 Shopping
+</button>
+
+<button onclick="setCategory('vet help for cat')">
+🩺 Vet Help
+</button>
+
+</div>
+
+<div class="chat-container">
+
+<div id="chat-box">
+
+<div class="bot-message">
+🐱 Welcome to CatGPT.
+Ask me anything about cats.
+</div>
+
+</div>
+
+<div class="input-area">
+
+<input
+id="question"
+type="text"
+placeholder="Ask about cats..."
+>
+
+<button onclick="askCat()">
+Send
+</button>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 Nairita • CatGPT™
+
+</footer>
 
 <script src="js/script.js"></script>
 

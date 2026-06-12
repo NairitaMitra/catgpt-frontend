@@ -1,52 +1,80 @@
-const BACKEND_URL =
+const API_URL =
 "https://catgpt-backend-fbvc.onrender.com/api/cat/ask";
+
+function setCategory(text){
+
+document.getElementById("question").value=text;
+
+}
 
 async function askCat(){
 
-    const input =
-    document.getElementById("question");
+const input =
+document.getElementById("question");
 
-    const question =
-    input.value;
+const question =
+input.value.trim();
 
-    if(question.trim()===""){
-        return;
-    }
+if(question==="") return;
 
-    const chat =
-    document.getElementById("chatBox");
+const chatBox =
+document.getElementById("chat-box");
 
-    chat.innerHTML +=
-    `<div class="user-message">${question}</div>`;
+chatBox.innerHTML +=
+`<div class="user-message">${question}</div>`;
 
-    input.value="";
+input.value="";
 
-    try{
+chatBox.innerHTML +=
+`<div class="bot-message" id="typing">
+🐱 CatGPT is thinking...
+</div>`;
 
-        const response =
-        await fetch(BACKEND_URL,{
-            method:"POST",
-            headers:{
-                "Content-Type":"text/plain"
-            },
-            body:question
-        });
+chatBox.scrollTop =
+chatBox.scrollHeight;
 
-        const answer =
-        await response.text();
+try{
 
-        chat.innerHTML +=
-        `<div class="bot-message">${answer}</div>`;
+const response =
+await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"text/plain"
+},
+body:question
+});
 
-    }
-    catch(error){
+const answer =
+await response.text();
 
-        chat.innerHTML +=
-        `<div class="bot-message">
-        Server unavailable.
-        </div>`;
-    }
+document.getElementById("typing").remove();
 
-    chat.scrollTop =
-    chat.scrollHeight;
+chatBox.innerHTML +=
+`<div class="bot-message">${answer}</div>`;
+
+chatBox.scrollTop =
+chatBox.scrollHeight;
+
 }
+catch(error){
+
+document.getElementById("typing").remove();
+
+chatBox.innerHTML +=
+`<div class="bot-message">
+⚠ Unable to connect to CatGPT server.
+</div>`;
+
+}
+
+}
+
+document
+.getElementById("question")
+.addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+askCat();
+}
+
+});
