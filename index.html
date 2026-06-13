@@ -6,58 +6,56 @@
   <title>CatGPT by Nairita</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
+  <div class="bg-paws">
+    <span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span>
+  </div>
 
-<div class="bg-paws">
-  <span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span>
-</div>
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
 
-<div class="app">
-
-  <header class="header">
-    <div class="brand">
-      <div class="logo">🐾</div>
-      <div>
-        <h1>CatGPT</h1>
-        <p>Premium Cat Intelligence</p>
-      </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <h3>📜 Recent Chats</h3>
+      <button onclick="toggleSidebar()">×</button>
     </div>
-    <div class="badge">PRO</div>
-  </header>
 
-  <section class="hero">
-    <h2>The Cat-Only AI Assistant</h2>
-    <p>Ask about cat behavior, sounds, food, medicine, shopping and vet guidance.</p>
-  </section>
+    <div id="historyList" class="history-list"></div>
 
-  <section class="quick-actions">
-    <button onclick="quickAsk('Why does my cat bite softly?')">🐾 Behavior</button>
-    <button onclick="quickAsk('Why does my cat meow at night?')">🔊 Sounds</button>
-    <button onclick="quickAsk('Best healthy food for cats?')">🍗 Food</button>
-    <button onclick="quickAsk('What medicine is safe for cats?')">💊 Medicine</button>
-    <button onclick="quickAsk('Best shopping items for a new cat?')">🛒 Shopping</button>
-    <button onclick="quickAsk('When should I take my cat to a vet?')">🩺 Vet Help</button>
-  </section>
+    <button class="clear-btn" onclick="clearHistory()">🗑 Clear History</button>
+  </aside>
 
-  <main class="main-grid">
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-    <aside class="info-card">
-      <h3>🐱 Cat Fact</h3>
-      <p id="catFact">Cats can rotate their ears 180 degrees.</p>
-      <button class="mini-btn" onclick="newFact()">New Fact</button>
-    </aside>
-    <aside class="info-card">
-        <h3>📜 Recent Chats</h3>
-        <div id="historyList"></div>
-        <button class="mini-btn" onclick="clearHistory()">Clear History</button>
-    </aside>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🐱</div>
+        <div>
+          <h1>CatGPT</h1>
+          <p>Your AI Cat Care Assistant 🐾</p>
+        </div>
+      </div>
+
+      <div class="badge">CATGPT PRO</div>
+    </header>
+
+    <section class="quick-actions">
+      <button onclick="quickAsk('Why does my cat bite softly?')">🐾 Behavior</button>
+      <button onclick="quickAsk('Why does my cat meow at night?')">🔊 Sounds</button>
+      <button onclick="quickAsk('Best healthy food for cats?')">🍗 Food</button>
+      <button onclick="quickAsk('What medicine is safe for cats?')">💊 Medicine</button>
+      <button onclick="quickAsk('Best shopping items for a new cat?')">🛒 Shopping</button>
+      <button onclick="quickAsk('When should I take my cat to a vet?')">🩺 Vet Help</button>
+    </section>
 
     <section class="chat-card">
       <div id="chatBox" class="chat-box">
         <div class="message bot">
           <div class="avatar">🐱</div>
           <div class="bubble">
-            Meow! I am CatGPT. Ask me anything about cats only.
+            Meow! I am CatGPT 🐾<br>
+            Ask me anything about cats only.
           </div>
         </div>
       </div>
@@ -65,18 +63,15 @@
       <div class="input-area">
         <input id="question" placeholder="Ask CatGPT about cats..." />
         <button class="mic-btn" onclick="startVoice()">🎤</button>
-        <button onclick="askCat()">Send</button>
+        <button class="send-btn" onclick="askCat()">➤ Send</button>
       </div>
     </section>
 
+    <footer>
+      © 2026 Nairita • CatGPT™ • All Rights Reserved 🐾
+    </footer>
   </main>
 
-  <footer>
-    © 2026 Nairita • CatGPT™ • All Rights Reserved 🐾
-  </footer>
-
-</div>
-
-<script src="js/script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

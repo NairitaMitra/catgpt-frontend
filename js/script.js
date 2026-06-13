@@ -9,14 +9,77 @@ const facts = [
   "Kittens need extra protein and frequent meals."
 ];
 
-function newFact() {
-  const fact = facts[Math.floor(Math.random() * facts.length)];
-  document.getElementById("catFact").innerText = fact;
-}
-
 function quickAsk(text) {
   document.getElementById("question").value = text;
   askCat();
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+
+function saveHistory(question) {
+  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
+
+  history = history.filter(item => item.text !== question);
+
+  history.unshift({
+    text: question,
+    date: "Today"
+  });
+
+  if (history.length > 12) {
+    history = history.slice(0, 12);
+  }
+
+  localStorage.setItem("catgptHistory", JSON.stringify(history));
+  loadHistory();
+}
+
+function loadHistory() {
+  const historyList = document.getElementById("historyList");
+  if (!historyList) return;
+
+  const history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
+
+  if (history.length === 0) {
+    historyList.innerHTML = `
+      <div class="history-item">
+        <div>
+          <div class="history-text">No recent chats yet</div>
+          <div class="history-date">Ask CatGPT something 🐾</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  historyList.innerHTML = "";
+
+  history.forEach((item, index) => {
+    historyList.innerHTML += `
+      <div class="history-item">
+        <div onclick="quickAsk('${escapeForClick(item.text)}')">
+          <div class="history-text">${escapeHtml(item.text)}</div>
+          <div class="history-date">${item.date}</div>
+        </div>
+        <button class="delete-history" onclick="deleteHistory(${index})">🗑</button>
+      </div>
+    `;
+  });
+}
+
+function deleteHistory(index) {
+  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
+  history.splice(index, 1);
+  localStorage.setItem("catgptHistory", JSON.stringify(history));
+  loadHistory();
+}
+
+function clearHistory() {
+  localStorage.removeItem("catgptHistory");
+  loadHistory();
 }
 
 async function askCat() {
@@ -24,9 +87,10 @@ async function askCat() {
   const question = input.value.trim();
 
   if (!question) return;
-  saveHistory(question);
 
   const chatBox = document.getElementById("chatBox");
+
+  saveHistory(question);
 
   chatBox.innerHTML += `
     <div class="message user">
@@ -51,7 +115,7 @@ async function askCat() {
   chatBox.innerHTML += `
     <div class="message bot" id="${typingId}">
       <div class="avatar">🐱</div>
-      <div class="bubble typing">🐾 CatGPT is thinking...</div>
+      <div class="bubble">🐾 CatGPT is thinking...</div>
     </div>
   `;
 
@@ -117,11 +181,7 @@ async function showCatImage() {
         <div class="bubble">
           Here is a cute cat for you 🐾
           <br><br>
-          <img 
-            src="${imageUrl}" 
-            alt="Cute cat"
-            style="max-width:100%; border-radius:16px; box-shadow:0 0 18px rgba(255,215,0,0.35);" 
-          />
+          <img src="${imageUrl}" alt="Cute cat" />
         </div>
       </div>
     `;
@@ -203,50 +263,17 @@ function escapeHtml(text) {
   });
 }
 
+function escapeForClick(text) {
+  return text
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'")
+    .replace(/"/g, "&quot;");
+}
+
 document.getElementById("question").addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
     askCat();
   }
 });
 
-function saveHistory(question) {
-  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
-
-  history.unshift(question);
-
-  history = [...new Set(history)];
-
-  if (history.length > 10) {
-    history = history.slice(0, 10);
-  }
-
-  localStorage.setItem("catgptHistory", JSON.stringify(history));
-
-  loadHistory();
-}
-
-function loadHistory() {
-  const historyList = document.getElementById("historyList");
-
-  if (!historyList) return;
-
-  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
-
-  historyList.innerHTML = "";
-
-  history.forEach(item => {
-    historyList.innerHTML += `
-      <div class="history-item" onclick="quickAsk('${item.replace(/'/g,"\\'")}')">
-        ${item}
-      </div>
-    `;
-  });
-}
-
-function clearHistory() {
-  localStorage.removeItem("catgptHistory");
-  loadHistory();
-}
-
-newFact();
 loadHistory();
