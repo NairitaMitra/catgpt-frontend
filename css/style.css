@@ -272,10 +272,84 @@ footer{
 }
 
 @media(max-width:800px){
-  .main-grid{grid-template-columns:1fr}
-  .info-card{display:none}
-  .hero h2{font-size:32px}
-  .chat-box{height:430px}
-  .header{padding:14px}
-  h1{font-size:28px}
+
+  .main-grid{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .info-card{
+    display:block !important;
+    width:100%;
+    padding:18px;
+    margin-bottom:10px;
+    order:1;
+  }
+
+  .chat-card{
+    order:2;
+  }
+
+  .info-card h3{
+    font-size:18px;
+    margin-bottom:8px;
+  }
+
+  .info-card p{
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  .hero h2{
+    font-size:28px;
+  }
+
+  .hero p{
+    font-size:14px;
+  }
+
+  .chat-box{
+    height:400px;
+  }
+
+  .header{
+    padding:14px;
+  }
+
+  .logo{
+    width:50px;
+    height:50px;
+    font-size:28px;
+  }
+
+  h1{
+    font-size:26px;
+  }
+
+  .quick-actions{
+    gap:8px;
+  }
+
+  .quick-actions button{
+    font-size:13px;
+    padding:10px 12px;
+  }
+
+  .input-area{
+    flex-direction:column;
+  }
+
+  .input-area button{
+    width:100%;
+    height:48px;
+  }
+
+  .bubble{
+    max-width:90%;
+  }
+
+  footer{
+    font-size:12px;
+  }
 }
