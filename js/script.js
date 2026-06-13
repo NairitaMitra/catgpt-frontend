@@ -97,54 +97,52 @@ document.getElementById("question").addEventListener("keydown",function(e){
 
 newFact();
 function startVoice() {
-
   const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const micButton = document.querySelector(".mic-btn");
+  const input = document.getElementById("question");
 
   if (!SpeechRecognition) {
-    alert("Voice input not supported in this browser.");
+    input.placeholder = "Voice not supported. Please type your question.";
     return;
   }
 
   const recognition = new SpeechRecognition();
-
-  recognition.lang = "en-US";
+  recognition.lang = "en-IN";
   recognition.continuous = false;
   recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-  const micButton = document.querySelector(".mic-btn");
+  micButton.classList.add("listening");
+  micButton.innerText = "🎙️";
+  input.placeholder = "Listening... speak now";
 
-  micButton.innerHTML = "🎙️";
+  try {
+    recognition.start();
+  } catch (e) {
+    micButton.classList.remove("listening");
+    micButton.innerText = "🎤";
+    input.placeholder = "Please type your question...";
+    return;
+  }
 
-  recognition.start();
-
-  recognition.onresult = (event) => {
-    const text = event.results[0][0].transcript;
-
-    document.getElementById("question").value = text;
-
-    micButton.innerHTML = "🎤";
+  recognition.onresult = function(event) {
+    const voiceText = event.results[0][0].transcript;
+    input.value = voiceText;
+    input.placeholder = "Ask CatGPT about cats...";
   };
 
-  recognition.onend = () => {
-    micButton.innerHTML = "🎤";
+  recognition.onerror = function(event) {
+    console.log("Voice error:", event.error);
+    input.placeholder = "Voice failed. Please type your question.";
   };
 
-  recognition.onerror = (event) => {
-
-    micButton.innerHTML = "🎤";
-
-    console.log("Voice Error:", event.error);
-
-    if(event.error === "not-allowed"){
-      alert("Microphone permission denied");
-    }
-    else if(event.error === "network"){
-      alert("Network issue. Try again.");
-    }
-    else{
-      console.log(event.error);
+  recognition.onend = function() {
+    micButton.classList.remove("listening");
+    micButton.innerText = "🎤";
+    if (!input.value) {
+      input.placeholder = "Voice failed. Please type your question.";
     }
   };
 }
