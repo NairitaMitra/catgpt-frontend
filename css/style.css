@@ -353,3 +353,19 @@ footer{
     font-size:12px;
   }
 }
+.mic-btn{
+  width:50px;
+  padding:0 !important;
+  font-size:20px;
+}
+
+.mic-btn.listening{
+  background:linear-gradient(135deg,#ff4d4d,#ffd700) !important;
+  animation:micPulse 1s infinite;
+}
+
+@keyframes micPulse{
+  0%{box-shadow:0 0 5px red}
+  50%{box-shadow:0 0 22px gold}
+  100%{box-shadow:0 0 5px red}
+}

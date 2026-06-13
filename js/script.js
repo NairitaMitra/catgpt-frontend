@@ -96,3 +96,41 @@ document.getElementById("question").addEventListener("keydown",function(e){
 });
 
 newFact();
+function startVoice(){
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+    alert("Voice input is not supported in this browser. Please use Chrome.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  const micButton = document.querySelector(".mic-btn");
+  micButton.classList.add("listening");
+  micButton.innerText = "🎙️";
+
+  recognition.start();
+
+  recognition.onresult = function(event){
+    const voiceText = event.results[0][0].transcript;
+    document.getElementById("question").value = voiceText;
+    micButton.classList.remove("listening");
+    micButton.innerText = "🎤";
+  };
+
+  recognition.onerror = function(){
+    micButton.classList.remove("listening");
+    micButton.innerText = "🎤";
+    alert("Could not capture voice. Please try again.");
+  };
+
+  recognition.onend = function(){
+    micButton.classList.remove("listening");
+    micButton.innerText = "🎤";
+  };
+}
