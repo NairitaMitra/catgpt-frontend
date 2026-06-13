@@ -24,6 +24,7 @@ async function askCat() {
   const question = input.value.trim();
 
   if (!question) return;
+  saveHistory(question);
 
   const chatBox = document.getElementById("chatBox");
 
@@ -208,4 +209,44 @@ document.getElementById("question").addEventListener("keydown", function(e) {
   }
 });
 
+function saveHistory(question) {
+  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
+
+  history.unshift(question);
+
+  history = [...new Set(history)];
+
+  if (history.length > 10) {
+    history = history.slice(0, 10);
+  }
+
+  localStorage.setItem("catgptHistory", JSON.stringify(history));
+
+  loadHistory();
+}
+
+function loadHistory() {
+  const historyList = document.getElementById("historyList");
+
+  if (!historyList) return;
+
+  let history = JSON.parse(localStorage.getItem("catgptHistory")) || [];
+
+  historyList.innerHTML = "";
+
+  history.forEach(item => {
+    historyList.innerHTML += `
+      <div class="history-item" onclick="quickAsk('${item.replace(/'/g,"\\'")}')">
+        ${item}
+      </div>
+    `;
+  });
+}
+
+function clearHistory() {
+  localStorage.removeItem("catgptHistory");
+  loadHistory();
+}
+
 newFact();
+loadHistory();

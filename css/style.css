@@ -369,3 +369,18 @@ footer{
   50%{box-shadow:0 0 22px gold}
   100%{box-shadow:0 0 5px red}
 }
+.history-item{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,215,0,0.2);
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
+}
+
+.history-item:hover{
+  background:rgba(255,215,0,0.15);
+  transform:translateX(3px);
+}
