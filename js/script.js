@@ -9,20 +9,21 @@ const facts = [
   "Kittens need extra protein and frequent meals."
 ];
 
-function newFact(){
+function newFact() {
   const fact = facts[Math.floor(Math.random() * facts.length)];
   document.getElementById("catFact").innerText = fact;
 }
 
-function quickAsk(text){
+function quickAsk(text) {
   document.getElementById("question").value = text;
   askCat();
 }
 
-async function askCat(){
+async function askCat() {
   const input = document.getElementById("question");
   const question = input.value.trim();
-  if(!question) return;
+
+  if (!question) return;
 
   const chatBox = document.getElementById("chatBox");
 
@@ -34,22 +35,34 @@ async function askCat(){
 
   input.value = "";
 
+  if (
+    question.toLowerCase().includes("cat image") ||
+    question.toLowerCase().includes("cat photo") ||
+    question.toLowerCase().includes("show cat") ||
+    question.toLowerCase().includes("cat picture")
+  ) {
+    showCatImage();
+    return;
+  }
+
   const typingId = "typing-" + Date.now();
 
   chatBox.innerHTML += `
     <div class="message bot" id="${typingId}">
       <div class="avatar">🐱</div>
-      <div class="bubble typing">🐾 CatGPT is thinking <span>...</span></div>
+      <div class="bubble typing">🐾 CatGPT is thinking...</div>
     </div>
   `;
 
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  try{
-    const response = await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain"},
-      body:question
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: question
     });
 
     const answer = await response.text();
@@ -62,8 +75,7 @@ async function askCat(){
         <div class="bubble">${escapeHtml(answer)}</div>
       </div>
     `;
-  }
-  catch(error){
+  } catch (error) {
     document.getElementById(typingId)?.remove();
 
     chatBox.innerHTML += `
@@ -77,25 +89,55 @@ async function askCat(){
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function escapeHtml(text){
-  return text.replace(/[&<>"']/g,function(m){
-    return {
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[m];
-  });
+async function showCatImage() {
+  const chatBox = document.getElementById("chatBox");
+
+  const loadingId = "cat-img-" + Date.now();
+
+  chatBox.innerHTML += `
+    <div class="message bot" id="${loadingId}">
+      <div class="avatar">🐱</div>
+      <div class="bubble">🐾 Finding a cute cat image...</div>
+    </div>
+  `;
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  try {
+    const response = await fetch("https://api.thecatapi.com/v1/images/search");
+    const data = await response.json();
+    const imageUrl = data[0].url;
+
+    document.getElementById(loadingId)?.remove();
+
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar">🐱</div>
+        <div class="bubble">
+          Here is a cute cat for you 🐾
+          <br><br>
+          <img 
+            src="${imageUrl}" 
+            alt="Cute cat"
+            style="max-width:100%; border-radius:16px; box-shadow:0 0 18px rgba(255,215,0,0.35);" 
+          />
+        </div>
+      </div>
+    `;
+  } catch (error) {
+    document.getElementById(loadingId)?.remove();
+
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar">🐱</div>
+        <div class="bubble">Could not load cat image right now.</div>
+      </div>
+    `;
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-document.getElementById("question").addEventListener("keydown",function(e){
-  if(e.key === "Enter"){
-    askCat();
-  }
-});
-
-newFact();
 function startVoice() {
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -141,8 +183,29 @@ function startVoice() {
   recognition.onend = function() {
     micButton.classList.remove("listening");
     micButton.innerText = "🎤";
+
     if (!input.value) {
       input.placeholder = "Voice failed. Please type your question.";
     }
   };
 }
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, function(m) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[m];
+  });
+}
+
+document.getElementById("question").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    askCat();
+  }
+});
+
+newFact();
