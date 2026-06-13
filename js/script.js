@@ -277,3 +277,4 @@ document.getElementById("question").addEventListener("keydown", function(e) {
 });
 
 loadHistory();
+newFact();

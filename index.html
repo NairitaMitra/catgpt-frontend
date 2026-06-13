@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CatGPT by Nairita</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CatGPT">
 </head>
 
 <body>
@@ -30,7 +35,9 @@
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="logo">🐱</div>
+        <div class="logo premium-logo">
+            <span class="paw-icon">🐾</span>
+        </div>
         <div>
           <h1>CatGPT</h1>
           <p>Your AI Cat Care Assistant 🐾</p>
@@ -47,6 +54,17 @@
       <button onclick="quickAsk('What medicine is safe for cats?')">💊 Medicine</button>
       <button onclick="quickAsk('Best shopping items for a new cat?')">🛒 Shopping</button>
       <button onclick="quickAsk('When should I take my cat to a vet?')">🩺 Vet Help</button>
+    </section>
+    <section class="fact-card">
+        <h3>🐱 Cat Fact</h3>
+
+        <div id="catFact">
+            Cats sleep around 12–16 hours a day.
+        </div>
+
+        <button class="fact-btn" onclick="newFact()">
+            New Fact
+        </button>
     </section>
 
     <section class="chat-card">
@@ -68,10 +86,17 @@
     </section>
 
     <footer>
-      © 2026 Nairita • CatGPT™ • All Rights Reserved 🐾
+      © 2026 Nairita • CatGPT™ • AI Cat Care Assistant • All Rights Reserved 🐾
     </footer>
   </main>
 
   <script src="js/script.js"></script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("CatGPT PWA service worker registered"))
+      .catch(error => console.log("Service worker failed:", error));
+  }
+</script>
 </body>
 </html>
