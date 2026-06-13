@@ -1,80 +1,98 @@
-const API_URL =
-"https://catgpt-backend-fbvc.onrender.com/api/cat/ask";
+const API_URL = "https://catgpt-backend-fbvc.onrender.com/api/cat/ask";
 
-function setCategory(text){
+const facts = [
+  "Cats sleep around 12–16 hours a day.",
+  "Cats can rotate their ears about 180 degrees.",
+  "A cat’s nose print is unique, like a fingerprint.",
+  "Cats use their whiskers to sense space and movement.",
+  "Purring can mean comfort, but sometimes also stress.",
+  "Kittens need extra protein and frequent meals."
+];
 
-document.getElementById("question").value=text;
+function newFact(){
+  const fact = facts[Math.floor(Math.random() * facts.length)];
+  document.getElementById("catFact").innerText = fact;
+}
 
+function quickAsk(text){
+  document.getElementById("question").value = text;
+  askCat();
 }
 
 async function askCat(){
+  const input = document.getElementById("question");
+  const question = input.value.trim();
+  if(!question) return;
 
-const input =
-document.getElementById("question");
+  const chatBox = document.getElementById("chatBox");
 
-const question =
-input.value.trim();
+  chatBox.innerHTML += `
+    <div class="message user">
+      <div class="bubble">${escapeHtml(question)}</div>
+    </div>
+  `;
 
-if(question==="") return;
+  input.value = "";
 
-const chatBox =
-document.getElementById("chat-box");
+  const typingId = "typing-" + Date.now();
 
-chatBox.innerHTML +=
-`<div class="user-message">${question}</div>`;
+  chatBox.innerHTML += `
+    <div class="message bot" id="${typingId}">
+      <div class="avatar">🐱</div>
+      <div class="bubble typing">🐾 CatGPT is thinking <span>...</span></div>
+    </div>
+  `;
 
-input.value="";
+  chatBox.scrollTop = chatBox.scrollHeight;
 
-chatBox.innerHTML +=
-`<div class="bot-message" id="typing">
-🐱 CatGPT is thinking...
-</div>`;
+  try{
+    const response = await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain"},
+      body:question
+    });
 
-chatBox.scrollTop =
-chatBox.scrollHeight;
+    const answer = await response.text();
 
-try{
+    document.getElementById(typingId)?.remove();
 
-const response =
-await fetch(API_URL,{
-method:"POST",
-headers:{
-"Content-Type":"text/plain"
-},
-body:question
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar">🐱</div>
+        <div class="bubble">${escapeHtml(answer)}</div>
+      </div>
+    `;
+  }
+  catch(error){
+    document.getElementById(typingId)?.remove();
+
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar">🐱</div>
+        <div class="bubble">⚠ CatGPT server is waking up. Please try again in a few seconds.</div>
+      </div>
+    `;
+  }
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function escapeHtml(text){
+  return text.replace(/[&<>"']/g,function(m){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m];
+  });
+}
+
+document.getElementById("question").addEventListener("keydown",function(e){
+  if(e.key === "Enter"){
+    askCat();
+  }
 });
 
-const answer =
-await response.text();
-
-document.getElementById("typing").remove();
-
-chatBox.innerHTML +=
-`<div class="bot-message">${answer}</div>`;
-
-chatBox.scrollTop =
-chatBox.scrollHeight;
-
-}
-catch(error){
-
-document.getElementById("typing").remove();
-
-chatBox.innerHTML +=
-`<div class="bot-message">
-⚠ Unable to connect to CatGPT server.
-</div>`;
-
-}
-
-}
-
-document
-.getElementById("question")
-.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-askCat();
-}
-
-});
+newFact();
