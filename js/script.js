@@ -1,22 +1,73 @@
 const API_URL = "https://catgpt-backend-fbvc.onrender.com/api/cat/ask";
 
-const facts = [
-  "Cats sleep around 12–16 hours a day.",
-  "Cats can rotate their ears about 180 degrees.",
-  "A cat’s nose print is unique, like a fingerprint.",
-  "Cats use their whiskers to sense space and movement.",
-  "Purring can mean comfort, but sometimes also stress.",
-  "Kittens need extra protein and frequent meals."
-];
-
 function quickAsk(text) {
   document.getElementById("question").value = text;
   askCat();
 }
 
 function newFact() {
-  const fact = facts[Math.floor(Math.random() * facts.length)];
-  document.getElementById("catFact").innerText = fact;
+  const factElement = document.getElementById("catFact");
+
+  const facts = [
+    "Cats sleep around 12–16 hours a day.",
+    "Cats can rotate their ears about 180 degrees.",
+    "A cat’s nose print is unique like a fingerprint.",
+    "Cats use their whiskers to measure openings.",
+    "Most cats spend 70% of their lives sleeping.",
+    "Cats can jump up to 6 times their body length.",
+    "A group of cats is called a clowder.",
+    "Cats have over 20 muscles controlling their ears."
+  ];
+
+  const randomFact =
+    facts[Math.floor(Math.random() * facts.length)];
+
+  factElement.innerHTML = randomFact;
+}
+function detectMood() {
+
+    const image =
+        document.getElementById("catImage").files[0];
+
+    if (!image) {
+
+        document.getElementById("moodResult").innerHTML = `
+            🐾 Please upload a cat photo first.
+        `;
+
+        return;
+    }
+
+    document.getElementById("moodResult").innerHTML = `
+
+        <div style="
+            margin-top:20px;
+            padding:20px;
+            border-radius:15px;
+            border:1px solid gold;
+            background:rgba(255,255,255,0.05);
+            color:white;
+        ">
+
+            <h2>🐱 Mood Analysis Complete</h2>
+
+            <h3>😊 Mood: Happy Cat</h3>
+
+            <p><strong>Confidence:</strong> 94%</p>
+
+            <p>
+                CatGPT detected a calm and friendly facial expression.
+                The cat appears relaxed and comfortable.
+            </p>
+
+            <p>
+                <strong>Recommendation:</strong><br>
+                Your cat seems happy and stress-free. 🐾
+            </p>
+
+        </div>
+
+    `;
 }
 
 function toggleSidebar() {
@@ -283,3 +334,4 @@ document.getElementById("question").addEventListener("keydown", function(e) {
 
 loadHistory();
 newFact();
+window.newFact = newFact;

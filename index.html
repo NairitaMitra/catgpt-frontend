@@ -65,7 +65,16 @@
         <button class="fact-btn" onclick="newFact()">
             New Fact
         </button>
+        <input type="file" id="catImage" accept="image/*">
+
+        <button onclick="detectMood()">
+            Analyze Mood
+        </button>
+
+        <div id="moodResult"></div>
+
     </section>
+    
 
     <section class="chat-card">
       <div id="chatBox" class="chat-box">
