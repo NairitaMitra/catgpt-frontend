@@ -14,6 +14,11 @@ function quickAsk(text) {
   askCat();
 }
 
+function newFact() {
+  const fact = facts[Math.floor(Math.random() * facts.length)];
+  document.getElementById("catFact").innerText = fact;
+}
+
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
   document.getElementById("overlay").classList.toggle("show");
