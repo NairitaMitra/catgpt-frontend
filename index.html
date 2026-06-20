@@ -65,16 +65,52 @@
         <button class="fact-btn" onclick="newFact()">
             New Fact
         </button>
-        <input type="file" id="catImage" accept="image/*">
-
-        <button onclick="detectMood()">
-            Analyze Mood
-        </button>
-
-        <div id="moodResult"></div>
 
     </section>
-    
+    <section class="mood-card">
+      <h3>🐱 Cat Mood Detector</h3>
+      <p class="mood-subtitle">Upload a cat photo and CatGPT will analyze the mood.</p>
+
+      <div class="mood-grid">
+
+        <div class="mood-panel">
+          <h4>📸 Cat Photo Preview</h4>
+
+          <input
+            type="file"
+            id="catImage"
+            accept="image/*"
+            onchange="previewCatImage(event)"
+          >
+
+          <label for="catImage" class="upload-btn">
+            📸 Choose Cat Photo
+          </label>
+
+          <div id="fileName" class="file-name">No photo selected</div>
+
+          <div class="preview-box">
+            <img id="catPreview" style="display:none;" />
+            <div id="previewPlaceholder">🐾 Photo preview will appear here</div>
+          </div>
+        </div>
+
+        <div class="mood-panel">
+          <h4>✨ Mood Result</h4>
+
+          <button class="analyze-btn" onclick="detectMood()">
+            ✨ Analyze Mood
+          </button>
+
+          <div id="moodResult" class="mood-result-empty">
+            CatGPT analysis will appear here.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
 
     <section class="chat-card">
       <div id="chatBox" class="chat-box">

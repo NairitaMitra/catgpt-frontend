@@ -24,51 +24,81 @@ function newFact() {
 
   factElement.innerHTML = randomFact;
 }
-function detectMood() {
+const MOOD_API_URL =
+"https://catgpt-backend-fbvc.onrender.com/api/cat/mood";
 
-    const image =
-        document.getElementById("catImage").files[0];
+function previewCatImage(event) {
+  const file = event.target.files[0];
 
-    if (!image) {
+  const preview = document.getElementById("catPreview");
+  const placeholder = document.getElementById("previewPlaceholder");
+  const fileName = document.getElementById("fileName");
+  const result = document.getElementById("moodResult");
 
-        document.getElementById("moodResult").innerHTML = `
-            🐾 Please upload a cat photo first.
-        `;
+  if (!file) {
+    fileName.innerText = "No photo selected";
+    preview.style.display = "none";
+    placeholder.style.display = "block";
+    return;
+  }
 
-        return;
-    }
+  fileName.innerText = file.name;
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  placeholder.style.display = "none";
 
-    document.getElementById("moodResult").innerHTML = `
-
-        <div style="
-            margin-top:20px;
-            padding:20px;
-            border-radius:15px;
-            border:1px solid gold;
-            background:rgba(255,255,255,0.05);
-            color:white;
-        ">
-
-            <h2>🐱 Mood Analysis Complete</h2>
-
-            <h3>😊 Mood: Happy Cat</h3>
-
-            <p><strong>Confidence:</strong> 94%</p>
-
-            <p>
-                CatGPT detected a calm and friendly facial expression.
-                The cat appears relaxed and comfortable.
-            </p>
-
-            <p>
-                <strong>Recommendation:</strong><br>
-                Your cat seems happy and stress-free. 🐾
-            </p>
-
-        </div>
-
-    `;
+  result.className = "mood-result-empty";
+  result.innerHTML = "CatGPT analysis will appear here.";
 }
+
+async function detectMood() {
+  const image = document.getElementById("catImage").files[0];
+  const result = document.getElementById("moodResult");
+
+  if (!image) {
+    result.className = "mood-result-card";
+    result.innerHTML = "🐾 Please upload a cat photo first.";
+    return;
+  }
+
+  if (!image.type.startsWith("image/")) {
+    result.className = "mood-result-card";
+    result.innerHTML = "🐾 Please upload a valid image file.";
+    return;
+  }
+
+  if (image.size > 5 * 1024 * 1024) {
+    result.className = "mood-result-card";
+    result.innerHTML = "🐾 Image size must be under 5 MB.";
+    return;
+  }
+
+  result.className = "mood-result-card loading-mood";
+  result.innerHTML = "🔍 CatGPT is reading your cat's mood...";
+
+  const formData = new FormData();
+  formData.append("file", image);
+
+  try {
+    const response = await fetch(MOOD_API_URL, {
+      method: "POST",
+      body: formData
+    });
+
+    const text = await response.text();
+
+    result.className = "mood-result-card";
+    result.innerHTML = text.replace(/\n/g, "<br>");
+
+  } catch (error) {
+    result.className = "mood-result-card";
+    result.innerHTML =
+      "⚠ Unable to connect to CatGPT Vision server. Please try again.";
+
+    console.error(error);
+  }
+}
+
 
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
